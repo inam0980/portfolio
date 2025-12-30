@@ -1,0 +1,7 @@
+config/db.php
+.env
+*.log
+.DS_Store
+Thumbs.db
+assets/images/projects/*
+!assets/images/projects/.gitkeep
