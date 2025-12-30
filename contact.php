@@ -302,9 +302,9 @@ $pageTitle = "Contact - Portfolio";
             <i class="fas fa-folder"></i>
             <span>Projects</span>
         </a>
-        <a href="contact.php" class="active">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
+        <a href="certifications.php">
+            <i class="fas fa-certificate"></i>
+            <span>Certifications</span>
         </a>
     </nav>
 

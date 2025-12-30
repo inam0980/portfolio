@@ -2,14 +2,20 @@
 require_once 'config/db.php';
 $pageTitle = "Skills - Portfolio";
 
-// Fetch skills from database grouped by category
-$stmt = $pdo->query("SELECT * FROM skills ORDER BY category, display_order, skill_name");
+// Fetch skills with category information
+$stmt = $pdo->query("
+    SELECT s.*, sc.name as category_name, sc.icon as category_icon
+    FROM skills s
+    LEFT JOIN skill_categories sc ON s.category_id = sc.id
+    ORDER BY sc.name, s.display_order, s.skill_name
+");
 $allSkills = $stmt->fetchAll();
 
 // Group skills by category
 $skillsByCategory = [];
 foreach ($allSkills as $skill) {
-    $skillsByCategory[$skill['category']][] = $skill;
+    $categoryName = $skill['category_name'] ?: 'Uncategorized';
+    $skillsByCategory[$categoryName][] = $skill;
 }
 ?>
 <!DOCTYPE html>
@@ -73,28 +79,27 @@ foreach ($allSkills as $skill) {
                     <div style="margin-bottom: var(--spacing-2xl);">
                         <h2 style="margin-bottom: var(--spacing-xl); display: flex; align-items: center; gap: var(--spacing-sm);">
                             <?php
-                            $icons = [
-                                'Programming' => 'fa-code',
-                                'Data' => 'fa-database',
-                                'Tools' => 'fa-wrench'
-                            ];
-                            $icon = $icons[$category] ?? 'fa-star';
+                            // Get icon from first skill in category or use default
+                            $categoryIcon = $skills[0]['category_icon'] ?? 'fa-star';
                             ?>
-                            <i class="fas <?php echo $icon; ?>" style="color: var(--primary-color);"></i>
+                            <i class="fas <?php echo $categoryIcon; ?>" style="color: var(--primary-color);"></i>
                             <?php echo htmlspecialchars($category); ?> Skills
                         </h2>
                         
                         <div class="grid grid-2">
                             <?php foreach ($skills as $skill): ?>
-                                <div class="skill-item">
-                                    <div class="skill-header">
-                                        <span class="skill-name"><?php echo htmlspecialchars($skill['skill_name']); ?></span>
-                                        <span class="skill-level"><?php echo htmlspecialchars($skill['level']); ?>%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" 
-                                             data-width="<?php echo htmlspecialchars($skill['level']); ?>" 
-                                             style="width: 0%;">
+                                <div class="card" style="position: relative; overflow: hidden;">
+                                    <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: var(--primary-color); opacity: 0.08; border-radius: 50%; filter: blur(25px);"></div>
+                                    <div style="position: relative; z-index: 1;">
+                                        <div class="skill-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                                            <span class="skill-name" style="font-size: 1.1rem; font-weight: 600; color: var(--text-light);"><?php echo htmlspecialchars($skill['skill_name']); ?></span>
+                                            <span class="skill-level" style="font-size: 1.3rem; font-weight: 700; color: var(--primary-color); background: rgba(255, 102, 0, 0.1); padding: 0.25rem 0.75rem; border-radius: 20px;"><?php echo htmlspecialchars($skill['level']); ?>%</span>
+                                        </div>
+                                        <div class="progress-bar" style="height: 12px; background: rgba(255, 102, 0, 0.15); border-radius: 10px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
+                                            <div class="progress-fill" 
+                                                 data-width="<?php echo htmlspecialchars($skill['level']); ?>" 
+                                                 style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border-radius: 10px; transition: width 1.5s ease-out; box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -229,9 +234,9 @@ foreach ($allSkills as $skill) {
             <i class="fas fa-folder"></i>
             <span>Projects</span>
         </a>
-        <a href="contact.php">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
+        <a href="certifications.php">
+            <i class="fas fa-certificate"></i>
+            <span>Certifications</span>
         </a>
     </nav>
 

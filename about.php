@@ -17,6 +17,8 @@ $pageTitle = "About Me - Portfolio";
     
     <!-- Stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -58,32 +60,87 @@ $pageTitle = "About Me - Portfolio";
     <!-- About Content -->
     <section class="section">
         <div class="container">
-            <div style="max-width: 900px; margin: 0 auto; text-align: center;">
-                <!-- Bio Content -->
-                <div>
-                    <h2>Hello! I'm <span style="color: var(--primary-color);">Inam Khan</span></h2>
-                    <h3 style="color: var(--text-secondary); font-weight: 500; margin-bottom: var(--spacing-lg);">
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <!-- Profile Image -->
+                <div style="text-align: center; margin-bottom: var(--spacing-2xl);">
+                    <img src="assets/images/profile.jpg" alt="Inam Khan" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover; border: 5px solid var(--primary-color); box-shadow: 0 0 40px rgba(255, 102, 0, 0.4);">
+                    <h2 style="margin-top: var(--spacing-lg); font-size: 2.5rem;">Hello! I'm <span style="color: var(--primary-color);">Inam Khan</span></h2>
+                    <h3 style="color: var(--text-secondary); font-weight: 500; margin-top: var(--spacing-sm); font-size: 1.5rem;">
                         Aspiring Data Analyst
                     </h3>
+                </div>
+                
+                <!-- Bio Content Cards -->
+                <div style="display: grid; gap: var(--spacing-lg);">
+                    <!-- Card 1 -->
+                    <div class="card" style="position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: var(--primary-color); opacity: 0.08; border-radius: 50%; filter: blur(40px);"></div>
+                        <div style="position: relative; z-index: 1; display: flex; gap: var(--spacing-lg); align-items: start;">
+                            <div style="flex-shrink: 0;">
+                                <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);">
+                                    <i class="fas fa-chart-line" style="font-size: 2rem; color: #fff;"></i>
+                                </div>
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 style="color: var(--primary-color); margin-bottom: var(--spacing-sm); font-size: 1.3rem;">Data Enthusiast</h4>
+                                <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-light);">
+                                    A passionate data enthusiast with a keen eye for transforming complex datasets into meaningful insights that drive business decisions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <p style="font-size: 1.1rem; line-height: 1.8; text-align: left;">
-                        A passionate data enthusiast with a keen eye for transforming complex datasets into meaningful insights that drive business decisions.
-                    </p>
+                    <!-- Card 2 -->
+                    <div class="card" style="position: relative; overflow: hidden;">
+                        <div style="position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; background: var(--secondary-color); opacity: 0.08; border-radius: 50%; filter: blur(40px);"></div>
+                        <div style="position: relative; z-index: 1; display: flex; gap: var(--spacing-lg); align-items: start;">
+                            <div style="flex-shrink: 0;">
+                                <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);">
+                                    <i class="fas fa-graduation-cap" style="font-size: 2rem; color: #fff;"></i>
+                                </div>
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 style="color: var(--primary-color); margin-bottom: var(--spacing-sm); font-size: 1.3rem;">Educational Background</h4>
+                                <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-light);">
+                                    I'm a motivated and detail-oriented aspiring Data Analyst with a foundational education in Computer Science and Data Science from Lovely Professional University, Punjab. My expertise lies in leveraging analytical tools and programming to drive data-driven decision-making and deliver impactful projects.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <p style="font-size: 1.1rem; line-height: 1.8; text-align: left;">
-                        I'm a motivated and detail-oriented aspiring Data Analyst with a foundational education in Computer Science and Data Science from Lovely Professional University, Punjab. My expertise lies in leveraging analytical tools and programming to drive data-driven decision-making and deliver impactful projects.
-                    </p>
-                    
-                    <p style="font-size: 1.1rem; line-height: 1.8; text-align: left;">
-                        When I'm not crunching numbers or building data models, I enjoy exploring new technologies, contributing to open-source projects, and expanding my knowledge in the ever-evolving field of data science.
-                    </p>
-                    
-                    <div style="margin-top: var(--spacing-xl); text-align: center;">
-                        <a href="contact.php" class="btn btn-primary">Get In Touch</a>
-                        <a href="assets/resume.pdf" class="btn btn-secondary" style="margin-left: var(--spacing-sm);" download>
+                    <!-- Card 3 -->
+                    <div class="card" style="position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: -30px; left: -30px; width: 120px; height: 120px; background: var(--primary-color); opacity: 0.08; border-radius: 50%; filter: blur(40px);"></div>
+                        <div style="position: relative; z-index: 1; display: flex; gap: var(--spacing-lg); align-items: start;">
+                            <div style="flex-shrink: 0;">
+                                <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);">
+                                    <i class="fas fa-code" style="font-size: 2rem; color: #fff;"></i>
+                                </div>
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 style="color: var(--primary-color); margin-bottom: var(--spacing-sm); font-size: 1.3rem;">Beyond Work</h4>
+                                <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-light);">
+                                    When I'm not crunching numbers or building data models, I enjoy exploring new technologies, contributing to open-source projects, and expanding my knowledge in the ever-evolving field of data science.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: var(--spacing-2xl); text-align: center; display: flex; gap: var(--spacing-sm); justify-content: center; flex-wrap: wrap;">
+                    <a href="contact.php" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+                        <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i> Get In Touch
+                    </a>
+                    <?php
+                    // Find resume file dynamically
+                    $resumeFiles = glob('assets/resume.*');
+                    if (!empty($resumeFiles)):
+                        $resumeFile = basename($resumeFiles[0]);
+                    ?>
+                        <a href="assets/<?php echo htmlspecialchars($resumeFile); ?>" class="btn btn-secondary" style="padding: 1rem 2.5rem; font-size: 1.1rem;" download>
                             <i class="fas fa-download"></i> Download Resume
                         </a>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -111,11 +168,10 @@ $pageTitle = "About Me - Portfolio";
     <!-- Education Timeline -->
     <section class="section" style="background: var(--bg-secondary);">
         <div class="container">
-            <h2 class="section-title">Education</h2>
-            
+            <h2 class="section-title" data-aos="fade-up">Education</h2>
             <div style="max-width: 900px; margin: 0 auto;">
                 <div class="timeline">
-                    <div class="timeline-item">
+                    <div class="timeline-item" data-aos="fade-up" data-aos-delay="0">
                         <div class="timeline-date">Aug 2023 - Present</div>
                         <h3 class="timeline-title">B.Tech in Computer Science and Engineering (Data Science)</h3>
                         <div class="timeline-company">Lovely Professional University, Jalandhar, Punjab</div>
@@ -129,8 +185,7 @@ $pageTitle = "About Me - Portfolio";
                             Machine Learning, Statistical Analysis, Python Programming, Data Visualization
                         </p>
                     </div>
-                    
-                    <div class="timeline-item">
+                    <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
                         <div class="timeline-date">Jun 2021 - Mar 2023</div>
                         <h3 class="timeline-title">Senior Secondary Examination (Class 12th)</h3>
                         <div class="timeline-company">U.S.S. College, Jalalpur, Siwan</div>
@@ -139,8 +194,7 @@ $pageTitle = "About Me - Portfolio";
                             and problem-solving skills that laid the foundation for pursuing Computer Science and Data Science.
                         </p>
                     </div>
-                    
-                    <div class="timeline-item">
+                    <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
                         <div class="timeline-date">Apr 2020 - Mar 2021</div>
                         <h3 class="timeline-title">Secondary School Examination (Class 10th)</h3>
                         <div class="timeline-company">Emmanuel Mission High School, Siwan, Bihar</div>
@@ -157,28 +211,24 @@ $pageTitle = "About Me - Portfolio";
     <!-- Interests & Hobbies -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title">Interests & Hobbies</h2>
-            
+            <h2 class="section-title" data-aos="fade-up">Interests & Hobbies</h2>
             <div class="grid grid-4">
-                <div class="card text-center">
+                <div class="card text-center" data-aos="zoom-in" data-aos-delay="0">
                     <i class="fas fa-code" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: var(--spacing-sm);"></i>
                     <h3 style="font-size: 1.25rem;">Coding</h3>
                     <p>Building side projects and contributing to open-source</p>
                 </div>
-                
-                <div class="card text-center">
+                <div class="card text-center" data-aos="zoom-in" data-aos-delay="100">
                     <i class="fas fa-book-reader" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: var(--spacing-sm);"></i>
                     <h3 style="font-size: 1.25rem;">Learning</h3>
                     <p>Constantly exploring new technologies and frameworks</p>
                 </div>
-                
-                <div class="card text-center">
+                <div class="card text-center" data-aos="zoom-in" data-aos-delay="200">
                     <i class="fas fa-users" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: var(--spacing-sm);"></i>
                     <h3 style="font-size: 1.25rem;">Community</h3>
                     <p>Attending tech meetups and sharing knowledge</p>
                 </div>
-                
-                <div class="card text-center">
+                <div class="card text-center" data-aos="zoom-in" data-aos-delay="300">
                     <i class="fas fa-gamepad" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: var(--spacing-sm);"></i>
                     <h3 style="font-size: 1.25rem;">Gaming</h3>
                     <p>Enjoying strategy games and problem-solving challenges</p>
@@ -225,13 +275,21 @@ $pageTitle = "About Me - Portfolio";
             <i class="fas fa-folder"></i>
             <span>Projects</span>
         </a>
-        <a href="contact.php">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
+        <a href="certifications.php">
+            <i class="fas fa-certificate"></i>
+            <span>Certifications</span>
         </a>
     </nav>
 
-    <!-- JavaScript -->
-    <script src="assets/js/main.js"></script>
+        <!-- JavaScript -->
+        <script src="assets/js/main.js"></script>
+        <!-- AOS Animation Library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+        <script>
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+        </script>
 </body>
 </html>

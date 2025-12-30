@@ -130,8 +130,14 @@
                 <a href="skills.php" class="menu-item">
                     <i class="fas fa-code"></i> Manage Skills
                 </a>
+                <a href="categories.php" class="menu-item">
+                    <i class="fas fa-tags"></i> Manage Categories
+                </a>
                 <a href="certifications.php" class="menu-item">
                     <i class="fas fa-certificate"></i> Manage Certifications
+                </a>
+                <a href="cv-management.php" class="menu-item">
+                    <i class="fas fa-file-pdf"></i> Manage CV
                 </a>
                 <a href="messages.php" class="menu-item">
                     <i class="fas fa-envelope"></i> Messages

@@ -8,6 +8,10 @@ $success = '';
 $error = '';
 $project = null;
 
+// Fetch project categories for dropdown
+$categoriesStmt = $pdo->query("SELECT * FROM project_categories ORDER BY name");
+$categories = $categoriesStmt->fetchAll();
+
 // Get project ID
 if (!isset($_GET['id'])) {
     header('Location: projects.php');
@@ -33,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tech_stack = trim($_POST['tech_stack'] ?? '');
     $github_link = trim($_POST['github_link'] ?? '');
     $live_link = trim($_POST['live_link'] ?? '');
+    $category_id = !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null;
     $is_recent = isset($_POST['is_recent']) ? 1 : 0;
     
     if (empty($title) || empty($description) || empty($tech_stack)) {
@@ -45,45 +50,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $imageName = $project['image'];
         
         // Handle new image upload
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = '../assets/images/projects/';
-            
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-            
-            $fileInfo = pathinfo($_FILES['image']['name']);
-            $extension = strtolower($fileInfo['extension']);
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-            
-            if (in_array($extension, $allowedExtensions)) {
-                if ($_FILES['image']['size'] <= 5000000) {
-                    // Delete old image
-                    if ($project['image'] !== 'default-project.jpg') {
-                        $oldImagePath = $uploadDir . $project['image'];
-                        if (file_exists($oldImagePath)) {
-                            unlink($oldImagePath);
+        if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = '../assets/images/projects/';
+                
+                if (!is_dir($uploadDir)) {
+                    if (!mkdir($uploadDir, 0777, true)) {
+                        $error = 'Failed to create upload directory.';
+                    }
+                }
+                
+                if (empty($error)) {
+                    $fileInfo = pathinfo($_FILES['image']['name']);
+                    $extension = strtolower($fileInfo['extension']);
+                    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                    
+                    if (in_array($extension, $allowedExtensions)) {
+                        if ($_FILES['image']['size'] <= 5000000) {
+                            // Delete old image
+                            if (!empty($project['image'])) {
+                                $oldImagePath = $uploadDir . $project['image'];
+                                if (file_exists($oldImagePath)) {
+                                    unlink($oldImagePath);
+                                }
+                            }
+                            
+                            $imageName = uniqid('project_') . '.' . $extension;
+                            $uploadPath = $uploadDir . $imageName;
+                            
+                            if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                                $error = 'Failed to upload image. Check directory permissions.';
+                            }
+                        } else {
+                            $error = 'Image size must be less than 5MB.';
                         }
+                    } else {
+                        $error = 'Invalid image format. Only JPG, PNG, GIF, and WebP are allowed.';
                     }
-                    
-                    $imageName = uniqid('project_') . '.' . $extension;
-                    $uploadPath = $uploadDir . $imageName;
-                    
-                    if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-                        $error = 'Failed to upload image.';
-                    }
-                } else {
-                    $error = 'Image size must be less than 5MB.';
                 }
             } else {
-                $error = 'Invalid image format.';
+                // Provide specific error messages
+                switch ($_FILES['image']['error']) {
+                    case UPLOAD_ERR_INI_SIZE:
+                    case UPLOAD_ERR_FORM_SIZE:
+                        $error = 'Image file is too large.';
+                        break;
+                    case UPLOAD_ERR_PARTIAL:
+                        $error = 'Image was only partially uploaded.';
+                        break;
+                    default:
+                        $error = 'Failed to upload image. Error code: ' . $_FILES['image']['error'];
+                }
             }
         }
         
         if (empty($error)) {
             try {
-                $stmt = $pdo->prepare("UPDATE projects SET title = ?, description = ?, tech_stack = ?, github_link = ?, live_link = ?, image = ?, is_recent = ? WHERE id = ?");
-                $result = $stmt->execute([$title, $description, $tech_stack, $github_link, $live_link, $imageName, $is_recent, $id]);
+                $stmt = $pdo->prepare("UPDATE projects SET title = ?, description = ?, tech_stack = ?, github_link = ?, live_link = ?, image = ?, category_id = ?, is_recent = ? WHERE id = ?");
+                $result = $stmt->execute([$title, $description, $tech_stack, $github_link, $live_link, $imageName, $category_id, $is_recent, $id]);
                 
                 if ($result) {
                     $success = 'Project updated successfully!';
@@ -117,7 +141,7 @@ include 'header.php';
     
     <div class="card">
         <form method="POST" enctype="multipart/form-data">
-            <div class="grid grid-2" style="gap: var(--spacing-lg);">
+            <div class="grid grid-3" style="gap: var(--spacing-lg);">
                 <div class="form-group">
                     <label for="title" class="form-label">Project Title *</label>
                     <input type="text" id="title" name="title" class="form-control" 
@@ -128,6 +152,19 @@ include 'header.php';
                     <label for="tech_stack" class="form-label">Tech Stack (comma-separated) *</label>
                     <input type="text" id="tech_stack" name="tech_stack" class="form-control" 
                            value="<?php echo htmlspecialchars($project['tech_stack']); ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category_id" class="form-label">Category</label>
+                    <select id="category_id" name="category_id" class="form-control">
+                        <option value="">-- Select Category --</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo $category['id']; ?>" 
+                                <?php echo ($project['category_id'] == $category['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($category['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
             

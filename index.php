@@ -51,6 +51,9 @@ $pageTitle = "Home - Portfolio";
     <section class="hero">
         <div class="container">
             <div class="hero-content">
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <img src="assets/images/profile.jpg" alt="Inam Khan" style="width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 5px solid var(--primary-color); box-shadow: 0 0 40px rgba(255, 102, 0, 0.5);">
+                </div>
                 <p class="hero-subtitle">Hello, I'm</p>
                 <h1 class="hero-title">Inam Khan</h1>
                 <p class="hero-description">
@@ -89,10 +92,15 @@ $pageTitle = "Home - Portfolio";
                 $stats[2]['count'] = $skillCount;
                 
                 foreach ($stats as $stat): ?>
-                    <div class="card text-center">
-                        <i class="fas <?php echo $stat['icon']; ?>" style="font-size: 3rem; color: var(--primary-color); margin-bottom: var(--spacing-sm);"></i>
-                        <h3 style="color: var(--primary-color); margin-bottom: var(--spacing-xs);"><?php echo $stat['count']; ?></h3>
-                        <p><?php echo $stat['label']; ?></p>
+                    <div class="card text-center" style="position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: var(--primary-color); opacity: 0.1; border-radius: 50%; filter: blur(30px);"></div>
+                        <div style="position: relative; z-index: 1;">
+                            <div style="width: 80px; height: 80px; margin: 0 auto var(--spacing-md); background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);">
+                                <i class="fas <?php echo $stat['icon']; ?>" style="font-size: 2rem; color: #fff;"></i>
+                            </div>
+                            <h3 style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: var(--spacing-xs); font-weight: 700;"><?php echo $stat['count']; ?></h3>
+                            <p style="color: var(--text-light); font-size: 0.95rem; font-weight: 500;"><?php echo $stat['label']; ?></p>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -121,7 +129,6 @@ $pageTitle = "Home - Portfolio";
                             <?php endif; ?>
                             
                             <h3 class="card-title"><?php echo htmlspecialchars($project['title']); ?></h3>
-                            <p class="card-description"><?php echo htmlspecialchars(substr($project['description'], 0, 120)) . '...'; ?></p>
                             
                             <div class="card-tags">
                                 <?php 
@@ -131,20 +138,11 @@ $pageTitle = "Home - Portfolio";
                                 <?php endforeach; ?>
                             </div>
                             
-                            <div class="card-links">
-                                <?php if ($project['github_link']): ?>
-                                    <a href="<?php echo htmlspecialchars($project['github_link']); ?>" 
-                                       class="btn btn-secondary" target="_blank" rel="noopener">
-                                        <i class="fab fa-github"></i> Code
-                                    </a>
-                                <?php endif; ?>
-                                
-                                <?php if ($project['live_link']): ?>
-                                    <a href="<?php echo htmlspecialchars($project['live_link']); ?>" 
-                                       class="btn btn-primary" target="_blank" rel="noopener">
-                                        <i class="fas fa-external-link-alt"></i> Live Demo
-                                    </a>
-                                <?php endif; ?>
+                            <div class="card-links" style="margin-top: var(--spacing-md);">
+                                <a href="project-detail.php?id=<?php echo $project['id']; ?>" 
+                                   class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-info-circle"></i> Read More
+                                </a>
                             </div>
                         </div>
                     <?php endforeach;
@@ -160,13 +158,24 @@ $pageTitle = "Home - Portfolio";
     </section>
 
     <!-- CTA Section -->
-    <section class="section" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; text-align: center;">
+    <section class="section" style="background: var(--bg-dark);">
         <div class="container">
-            <h2 style="color: white;">Let's Work Together</h2>
-            <p style="color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto var(--spacing-lg);">
-                Have a project in mind? Let's discuss how we can work together to bring your ideas to life.
-            </p>
-            <a href="contact.php" class="btn btn-outline">Contact Me</a>
+            <div class="card text-center" style="position: relative; overflow: hidden; max-width: 700px; margin: 0 auto; padding: var(--spacing-2xl);">
+                <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: var(--primary-color); opacity: 0.1; border-radius: 50%; filter: blur(60px);"></div>
+                <div style="position: absolute; bottom: -50px; right: -50px; width: 200px; height: 200px; background: var(--secondary-color); opacity: 0.1; border-radius: 50%; filter: blur(60px);"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div style="width: 100px; height: 100px; margin: 0 auto var(--spacing-lg); background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(255, 102, 0, 0.4);">
+                        <i class="fas fa-paper-plane" style="font-size: 2.5rem; color: #fff;"></i>
+                    </div>
+                    <h2 style="color: var(--primary-color); margin-bottom: var(--spacing-sm); font-size: 2.5rem;">Get In Touch</h2>
+                    <p style="color: var(--text-light); font-size: 1.1rem; max-width: 500px; margin: 0 auto var(--spacing-xl); line-height: 1.6;">
+                        Let's discuss your project or just say hello
+                    </p>
+                    <a href="contact.php" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+                        <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i> Contact Me
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -208,9 +217,9 @@ $pageTitle = "Home - Portfolio";
             <i class="fas fa-folder"></i>
             <span>Projects</span>
         </a>
-        <a href="contact.php">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
+        <a href="certifications.php">
+            <i class="fas fa-certificate"></i>
+            <span>Certifications</span>
         </a>
     </nav>
 

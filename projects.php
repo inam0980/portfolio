@@ -2,9 +2,18 @@
 require_once 'config/db.php';
 $pageTitle = "All Projects - Portfolio";
 
-// Fetch all projects from database
-$stmt = $pdo->query("SELECT * FROM projects ORDER BY created_at DESC");
+// Fetch all projects with their categories
+$stmt = $pdo->query("
+    SELECT p.*, pc.name as category_name, pc.id as category_id
+    FROM projects p
+    LEFT JOIN project_categories pc ON p.category_id = pc.id
+    ORDER BY p.created_at DESC
+");
 $allProjects = $stmt->fetchAll();
+
+// Fetch all categories for filter buttons
+$categoriesStmt = $pdo->query("SELECT * FROM project_categories ORDER BY name");
+$categories = $categoriesStmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,14 +107,17 @@ $allProjects = $stmt->fetchAll();
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">All Projects</button>
                 <button class="filter-btn" data-filter="recent">Recent</button>
-                <button class="filter-btn" data-filter="web">Web Apps</button>
-                <button class="filter-btn" data-filter="api">API Projects</button>
+                <?php foreach ($categories as $category): ?>
+                    <button class="filter-btn" data-filter="category-<?php echo $category['id']; ?>">
+                        <?php echo htmlspecialchars($category['name']); ?>
+                    </button>
+                <?php endforeach; ?>
             </div>
             
             <?php if (count($allProjects) > 0): ?>
                 <div class="grid grid-3">
                     <?php foreach ($allProjects as $project): ?>
-                        <div class="card project-card" data-category="<?php echo $project['is_recent'] ? 'recent' : 'older'; ?>">
+                        <div class="card project-card" data-category="<?php echo $project['is_recent'] ? 'recent' : 'older'; ?> <?php echo $project['category_id'] ? 'category-' . $project['category_id'] : ''; ?>">
                             <?php if ($project['image']): ?>
                                 <img src="assets/images/projects/<?php echo htmlspecialchars($project['image']); ?>" 
                                      alt="<?php echo htmlspecialchars($project['title']); ?>" 
@@ -113,11 +125,19 @@ $allProjects = $stmt->fetchAll();
                                      onerror="this.src='https://via.placeholder.com/400x200/667eea/ffffff?text=<?php echo urlencode($project['title']); ?>'">
                             <?php endif; ?>
                             
-                            <?php if ($project['is_recent']): ?>
-                                <div style="position: absolute; top: var(--spacing-md); right: var(--spacing-md); background: var(--accent-color); color: white; padding: 0.25rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">
-                                    RECENT
-                                </div>
-                            <?php endif; ?>
+                            <div style="position: absolute; top: var(--spacing-md); right: var(--spacing-md); display: flex; gap: 0.5rem; flex-direction: column; align-items: flex-end;">
+                                <?php if ($project['is_recent']): ?>
+                                    <div style="background: var(--accent-color); color: white; padding: 0.25rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">
+                                        RECENT
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <?php if ($project['category_name']): ?>
+                                    <div style="background: var(--primary-color); color: white; padding: 0.25rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">
+                                        <?php echo htmlspecialchars($project['category_name']); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                             
                             <h3 class="card-title"><?php echo htmlspecialchars($project['title']); ?></h3>
                             <p class="card-description"><?php echo htmlspecialchars($project['description']); ?></p>
@@ -218,9 +238,9 @@ $allProjects = $stmt->fetchAll();
             <i class="fas fa-folder"></i>
             <span>Projects</span>
         </a>
-        <a href="contact.php">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
+        <a href="certifications.php">
+            <i class="fas fa-certificate"></i>
+            <span>Certifications</span>
         </a>
     </nav>
 

@@ -38,7 +38,6 @@ $certifications = $stmt->fetchAll();
                 <li><a href="recent-projects.php" class="nav-link">Recent Projects</a></li>
                 <li><a href="projects.php" class="nav-link">All Projects</a></li>
                 <li><a href="certifications.php" class="nav-link">Certifications</a></li>
-                <li><a href="contact.php" class="nav-link">Contact</a></li>
             </ul>
             
             <button class="menu-toggle" aria-label="Toggle menu">
@@ -66,7 +65,11 @@ $certifications = $stmt->fetchAll();
                 <div class="grid grid-3">
                     <?php foreach ($certifications as $cert): ?>
                         <div class="card" style="text-align: center;">
-                            <i class="fas fa-certificate" style="font-size: 3rem; color: var(--primary-color); margin-bottom: var(--spacing-md);"></i>
+                            <?php if (!empty($cert['image'])): ?>
+                                <img src="assets/images/certifications/<?php echo htmlspecialchars($cert['image']); ?>" alt="<?php echo htmlspecialchars($cert['name']); ?>" style="max-width: 100%; max-height: 120px; margin-bottom: var(--spacing-md); border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                            <?php else: ?>
+                                <i class="fas fa-certificate" style="font-size: 3rem; color: var(--primary-color); margin-bottom: var(--spacing-md);"></i>
+                            <?php endif; ?>
                             
                             <h3 class="card-title" style="font-size: 1.25rem;"><?php echo htmlspecialchars($cert['name']); ?></h3>
                             
@@ -236,12 +239,11 @@ $certifications = $stmt->fetchAll();
             <i class="fas fa-folder"></i>
             <span>Projects</span>
         </a>
-        <a href="contact.php">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
+        <a href="certifications.php" class="active">
+            <i class="fas fa-certificate"></i>
+            <span>Certifications</span>
         </a>
     </nav>
-
     <!-- JavaScript -->
     <script src="assets/js/main.js"></script>
 </body>
